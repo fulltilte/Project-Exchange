@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}
+<title>Новости</title>
+{% endblock %}
+{% block content %}
+    {{ form.media }}
+<article>
+    <p class="project-name">{{ newsarticle.news_title }}</p>
+    <p class="project-info">{{ newsarticle.formatted_markdown|safe}}</p>
+    <div class="tag_container">
+    {% for tag in newsarticle.tags.all %}
+            <p class="tag" style="display:inline;"><a href="{% url 'NewsFeed:news_tag_filtered' tag.tag_name %}">#{{ tag.tag_name }}</a></p>
+        {% endfor %}
+    </div>
+    <p>Опубликовано: {{ newsarticle.pub_date }}</p>
+    <div class="commentBlock">
+        Комментарии:
+        {% for comment in newsarticle.comment_set.all %}
+            <div class="box">
+						<div class="Name">{{comment.user_id.username}} {{comment.pub_time}}
+                        <p>{{comment.comment_text}}</p>
+                        </div>
+			</div>
+        {% endfor %}
+    {% if user.is_authenticated %}
+        <div id="messagewindow">
+				<form name = "f2" class="f2" action="{% url 'NewsFeed:send_comment' newsarticle.pk  %}" method="post">
+				{% csrf_token %}
+                    <div id="sendcontainer"><textarea  name="comment_text" class="comment-area" cols="40" rows="5" placeholder="Write your comment here..." id="chatbox"> </textarea>
+                    <textarea style="display: none;" name="user_id">1</textarea>
+				</div>
+                <div id="buttoncontainer">
+                    <input type="submit"  name="button" value="Отправить" class="default-btn">
+                </div>
+				</form>
+        </div>
+    {% else %}
+        <p align="center" class="login_to_comment_warning">Войдите, чтобы оставить комментарий</p>
+    {% endif %}
+
+    </div>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+</article>
+{% endblock %}
+
+

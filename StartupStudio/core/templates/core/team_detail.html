@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Команды проекта</title>
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+         {# you can put additional info into this template for ex. chat, removing members #}
+                {% if request.GET.project_link %}
+                    <div><a href="{{ request.GET.project_link }}"> Вернуться к проекту </a></div>
+                {% endif %}
+                    <article class="super-thin-container">
+                        <div class="flex-space-between">
+                            <div class="left-container">
+                    <h2 class="entry_user_header">  {{ team.team_name }}  </h2>
+                        <div class="regular-text"> Описание: {{ team.team_lfg_message }} </div>
+                        <div class="regular-text"> Капитан: {{ team.team_captain.get_name }} </div>
+                        Текущий состав:
+                        {% for member in team.team_members.all %}
+                            <div class="regular-text"> <a href=""> {{ member.get_name }} </a> </div>
+                            {% endfor %}
+                        {% if is_in_team %} {# use this to display additional information for team members #}
+                            Вы в команде
+                            {% if is_captain %}
+                                <div><a href="{% url 'core:project_teams_applications' team.id %}{% if request.GET.project_link %}?project_link={{ request.GET.project_link }} {% endif %}"> Перейти к заявкам </a></div>
+                            {% endif %}
+                        {% else %}
+                             {% if team_application %}
+                                  <div class="regular_text">Статус заявки: {{ team_application.get_status_display }}</div>
+                                {% else %}
+
+                            <form name="join_team" action="{% url 'core:join_team' %}"  method="post">{% csrf_token %}<input type="hidden" id="team_pk" name="team_pk" value="{{ team.id }}" ><input type="submit" value="Отправить заявку" style=" height: 30px; margin-top: 20px; text-align: center"></form></form>
+                        {% endif %}
+                            </div>
+                            <div class="right-container"><img src="https://i.pinimg.com/736x/2b/81/a8/2b81a830e7be62b2437a493d2867c3d8.jpg" style="max-height: 256px; max-width: 400px; padding-left: 50px;"></div>
+                        </div>
+
+
+        {% endif %}
+                    </article>
+
+        {% else %}
+            <div class="error_warning"> Войдите, чтобы просматривать эту страницу </div>
+    {% endif %}
+
+{% endblock %}
+
+

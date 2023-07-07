@@ -1,0 +1,252 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Новости</title>
+{% endblock %}
+{% block content %}
+    <article style="padding-bottom: 80px;">
+        <div class="main-container">
+            <div class="main-info-container">
+                <p><a class="project-name" href="{% url 'core:project_detail' project.id %}">{{ project.project_name }}</a></p>
+
+                <div class="project-data"><p class="project-text">Тип мероприятия: <p class="project-info">{{project.event_type }}</p></p></div>
+                <div class="project-data"><p class="project-text">Информация о проекте:<p class="project-info">{{ project.project_info }}</p></p></div>
+                <div class="project-data"><p class="project-text">Направление: <p class="project-info">{{ project.direction_type }}</p></p></div>
+                <div class="project-data"><p class="project-text">Навыки для участия: </p>
+    
+                <div class="project-data">
+                    <div class="tag_container"> {% for skill in project.project_skills.all %}
+                        <div class="tag"><p class="project-info">{{skill.skill_name }}</p></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                            
+                <div class="project-data"><p class="project-text">Авторы: </p>{% for author in project.project_authors.all %}
+                    <p class="project-text"><p class="project-info">{{ author.username }}</p></p> {% endfor %}
+                </div>
+    
+                <div class="project-deadline">
+                    <div class="project-data"><p class="project-text">Начало: <p class="project-info">{{ project.project_start }}</p></p></div>
+                    <div class="project-data"><p class="project-text">Конец: <p class="project-info">{{ project.project_end }}</p></p></div>
+                </div>
+                            
+                <div class="project-data"><p class="project-text">Статус проекта: <p class="project-info">{{ project.get_project_status_display }}</p></p></div>
+                <div class="project-data"><p class="project-text">Опубликовано: <p class="project-info">{{ project.pub_date }}</p></p></div>
+                {% if is_author %}
+                <div class="flex-space-between" style="margin: 20px 0;">
+                    <div><a class="default-btn" href="{% url 'core:check_applicants_for_project' project.id %}"> Заявки проекта </a></div>
+                    <div><a class="default-btn" href="{% url 'core:look_participants_of_project' project.id %}"> Участники проекта</a></div>
+                    </div>
+
+                {% else %}
+                    {% if already_entered %} {# although you can easily swap already_entered for {{ project_entry }} #}
+                        {% if project_entry.status == 'pen' %}
+                            {# you can leave it be, as it won't necessary be much better #}
+                            <div>Статус заявки: <span
+                                    class="entry_status">Вы подали заявку на вступление на этот проект</span></div>
+                        {% elif project_entry.status == 'acc' %}
+                            <div>Статус заявки: <span class="entry_status">Заявка одобрена</span></div>
+                            <div class="regular_text">Ваша команда: {% if team %} <a href="{% url 'core:team_detailed' team.id %}?project_link={% url 'core:project_detail' project.id %}">{{ team.team_name }}</a> {% else %} У вас пока нет команды <a href="{% url 'core:project_teams' project.id %}">Найти</a> {% endif %}</div>
+                        {% elif project_entry.status == 'den' %}
+                            <div>Статус заявки: <span class="entry_status">Заявка отклонена</span></div>
+                        {% endif %}
+                    {% elif user.is_authenticated %}
+                        <div><a href="{% url 'core:enter_the_project_view' project.id %}"> Подать заявку на участие </a>
+                        </div>
+                    {% else %}
+                        <div> Чтобы подать заявку, <a class="to_link" href="{% url 'login' %}"> Войдите </a></div>
+                    {% endif %}
+                {% endif %}
+                <!-- <div class="shadebox"> Определить результаты проекта </div> -->
+            </div>
+            <div class="notice_board_outer">
+                Объявления:
+                <div class="notice_board">
+                    {% if user.is_authenticated %}
+                        <div class="message-container">
+                            {% for notice in project.projectnotice_set.all %}
+                                <div class="box">
+                                    <div class="Name">{{ notice.user.username }} {{ notice.pub_datetime }}
+                                        <p>{{ notice.notice_text }}</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        
+                </div>
+                {% if is_author %}
+                    <div id="messagewindow" style="margin-top: 10px;">
+                        <form name = "f2" class="f2" action="{% url 'core:project_send_notice' project.id %}" method="post">
+                            {% csrf_token %}
+                            <div id="sendcontainer"><textarea  name="notice_text" class="comment-area" cols="50" rows="4" placeholder="Write your comment here..." id="send_notice_bos"> </textarea>
+                                <textarea style="display: none;" name="user_id">1</textarea>
+                            </div>
+                            <div id="buttoncontainer">
+                                <input type="submit"  name="button" value="Отправить" class="default-btn">
+                            </div>
+                        </form>
+                        </div>
+                {% else %}
+                    <style> .message-container {
+                        height: 100%
+                    }</style>
+                {% endif %}
+                {% else %}
+                    <p align="center" class="login_to_comment_warning">Войдите, чтобы оставить объявление</p>
+                {% endif %}
+            </div>
+        </div>
+
+        {% if project_entry.status == 'acc' or is_author %}
+            <div class="chat_outer_container">
+            <div class="group_picker">
+                <button id="general_chat_button" style="background-color: #E1FAD5;" onclick="openChatGroup('general')">Общий чат</button>
+                <button id="team_chat_button" style="background-color: #E1FAD5;" onclick="openChatGroup('team')">Чат команды</button>
+            </div>
+            <div class="chat_wrap">
+                <div class="chat_inner_container">
+                    <div class="message_board">
+                        <div id="general-messages" class="outer_chat_wrapper">
+                            <div class="message-container" id="general-messages-container">
+                                {% if general_messages %} {# TODO: swap this with ajax late #}
+                                {% for message in general_messages %}
+                                    <div class="box">
+                                        <div class="Name">{{ message.user.username }} {{ message.pub_datetime }}
+                                            <p>{{ message.message_text }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                                    {% else %}
+                                    <div>Тут пока нет сообщений</div>
+                                    {% endif %}
+                            </div>
+                        </div>
+                        <div id="team-messages" class="outer_chat_wrapper">
+                            <div class="message-container" id="team-messages-container" >
+                                {% for message in team.teamchatmessage_set.all %}
+                                    <div class="box">
+                                        <div class="Name">{{ message.user.username }} {{ message.pub_datetime }}
+                                            <p>{{ message.message_text }}</p>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                    <!-- <div id="messagewindow">
+                        <form name="send_message_form" id="send_message_form" action="{% url 'core:project_send_message' project.id 'general' %}" method="post">
+                            {% csrf_token %}
+                            <div id="sendcontainer"><textarea name="message_text" cols="50" rows="4"
+                                                              placeholder="Написать новое объявление..."
+                                                              id="chatbox"> </textarea>
+                                <div id="buttoncontainer">
+
+                                    <button onclick="sendMessageAjax()" type="button" id="send-message-button">Отправить</button>
+                                </div>
+                                <textarea style="display: none;" name="user_id">1</textarea>
+                            </div>
+                        </form>
+                    </div> -->
+                    <div id="messagewindow">
+                        <form name = "f2" class="f2" action="{% url 'core:project_send_message' project.id 'general' %}" method="post">
+                        {% csrf_token %}
+                            <div id="sendcontainer"><textarea  name="message_text" class="comment-area" cols="50" rows="4" placeholder="Write your comment here..." id="chatbox"> </textarea>
+                        </div>
+                        <div id="buttoncontainer">
+                            <button onclick="sendMessageAjax()" class="default-btn" type="button" id="send-message-button">Отправить</button>
+                        </div>
+                        </form>
+                    </div>
+                    
+
+            </div>
+            <script>
+
+                //there should be a way to better organise all of that
+                {% if project_entry.status == 'acc' or is_author %}
+                var chat_groups = {'general': document.getElementById("general-messages"), 'team': document.getElementById("team-messages")}
+                var group_overflows = {'general': document.getElementById("general-messages-container"), 'team': document.getElementById("team-messages-container")} // dictionary containing message containers
+                //var general_link = "{% url 'core:project_send_message' project.id "general" %}"
+                var receive_links = {'general':"{% url 'core:ajax_get_messages' project.id "general" %}"}  //links used to receive messages
+                var links = {'general': "{% url 'core:project_send_message' project.id "general" %}"}    //links used to send messages
+
+                var active_chat = 'general'
+                var current_url = links[active_chat] //current send url
+
+                links['team'] = ""
+                {% endif %}
+                {% if team %}
+                    var team_message_link = "{% url 'core:project_send_message' project.id team.id %}"
+                    links['team'] = team_message_link
+                    receive_links['team'] = "{% url 'core:ajax_get_messages' project.id team.id %}"
+                {% endif %}
+
+                {# You can further automate it using Django templates adding additional groups to the dictionary #}
+
+                {# injecting javascripts if user have rights to receive a messages #}
+                {% if project_entry.status == 'acc' or is_author %}
+                    function getMessagesGeneral(chosen_channel){
+                        var doScroll = (group_overflows[chosen_channel].scrollTop === (group_overflows[chosen_channel].scrollHeight - group_overflows[chosen_channel].offsetHeight))
+                        console.log('Requesting JSON');
+                        $.getJSON(receive_links[chosen_channel], function(rowz){
+                          //console.log('JSON', rowz);
+                          $(group_overflows[chosen_channel]).empty();
+                          for (var i = 0; i < rowz.length; i++){
+                              line = rowz[i]
+                              $(group_overflows[chosen_channel]).append(
+                                  ' <div class=box>' +
+                                  '                                        <div class="Name">' + line[0] + " " + line[3] +
+                                  '                                            <p>' + line[2] + '</p>\n' +
+                                  '                                        </div>\n' +
+                                  '                                    </div>')
+                          }
+                          if (doScroll){
+                              group_overflows[chosen_channel].scrollTop = group_overflows[chosen_channel].scrollHeight;
+                          }
+                          //getMessagesGeneral() //DON'T EVER DO THAT
+                          setTimeout(getMessagesGeneral, 2000, chosen_channel) //some optimisations can be done, for example, pulling only new messages
+                        });
+                    }
+
+                    function sendMessageAjax() {
+                        var CSRFtoken = $('input[name=csrfmiddlewaretoken]').val();
+                        var textbox = document.getElementById("chatbox");
+                        var data = textbox.value;
+                        console.log("sending ajax message: "+data)
+                        textbox.value = "";
+                        $.post(current_url, {message_text: data, csrfmiddlewaretoken: CSRFtoken}, function(response){ /* success */ });
+                    }
+
+                {% endif %}
+                    $(document).ready(function(){
+                        $.ajaxSetup({cache: false});
+                        {% if project_entry.status == 'acc' or is_author %}
+                            getMessagesGeneral('general');
+                        {% endif %}
+                        {% if team %}
+                            getMessagesGeneral('team');
+                        {% endif %}
+                    })
+
+                function openChatGroup(group) {
+                    console.log("buttonPressed" + group);
+                    for (const [key, value] of Object.entries(chat_groups)) {
+                        console.log(key, value);
+                        value.style.display = "none";
+                    }
+                    chat_groups[group].style.display = "block";
+                    //document.getElementById("send_message_form").action = links[group]
+                    current_url = links[group]
+
+                    group_overflows[group].scrollTop = group_overflows[group].scrollHeight;
+                }
+            </script>
+        {% endif %}
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+    </article>
+{% endblock %}
+
+

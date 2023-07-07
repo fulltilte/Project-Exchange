@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Команды проекта</title>
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if is_user_in_project %}
+            {% if project_teams %}
+                <div class="flex-space-between"><h1> Выбор результатов проекта {{ project.project_name }}:</h1>
+                <a class="link_to shadebox" href="{% url 'core:project_detail' project.id %}">Вернуться к проекту  </a></div>
+                <div class="flex-space-between"><h2> По очереди выбирайте победившие команды, начиная от первого места до последнего призового. </h2>
+                                <a class="link_to shadebox" href="{% url 'core:project_detail' project.id %}">Отправить результаты  </a></div>
+</div>
+
+                {% for team in project_teams %}
+                    <article class="team_card" id="{{ team.id }}" style="cursor: pointer;" onclick="pickWinner({{ team.id }})">
+                        <h2 class="entry_user_header">  <a href="{% url 'core:team_detailed' team.id %}?project_link={% url 'core:project_teams' project.id %}"> {{ team.team_name }}  </a> </h2>
+                        <div class="regular-text"> Описание: {{ team.team_lfg_message }} </div>
+                        <div class="regular-text"> Капитан: {{ team.team_captain.get_name }} </div>
+                        Текущий состав:
+                        {% for member in team.team_members.all %}
+                            <div class="regular-text"> <a href=""> {{ member.get_name }} </a> </div>
+                            {% endfor %}
+
+                        <div class="regular-text">Ссылка на результирующий проект: www.GitHub.com/******</div>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p>Заявок или участников пока что нет.</p>
+            {% endif %}
+        {% else %}
+            <div class="error_warning"> Только участник проекта имеет право просматривать эту страницу </div>
+        {% endif %}
+        {% else %}
+            <div class="error_warning"> Войдите, чтобы просматривать эту страницу </div>
+    {% endif %}
+
+    <script>
+    var currentPlace = 1;
+    var colors = ['gold', 'silver', '#cd7f32', '#76d7ea']
+    function pickWinner(team_id) {
+        document.getElementById(team_id).style.borderColor = colors[currentPlace-1];
+        if(currentPlace<4){currentPlace+=1;}
+    }
+</script>
+{% endblock %}
+
+

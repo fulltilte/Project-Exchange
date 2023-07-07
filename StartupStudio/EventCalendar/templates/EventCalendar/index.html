@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Мероприятия</title>
+{% endblock %}
+{% block content %}
+    {% if tag %}
+        <p align="center"><a href="{% url 'EventCalendar:events' %}">Сбросить фильтры</a></p>
+    {% endif %}
+    <div class="title-container"><h2 class="my-project-title">Мероприятия</h2></div>
+{% if latest_event_list %}
+    {% for event_article in latest_event_list %}
+    
+        <article>
+            <p><a class="project-name" href="{% url 'EventCalendar:detail' event_article.id %}">{{ event_article.event_title }}</a></p>
+        <div class="articleMainBody" style="display: flex; justify-content: space-between;">
+            <div class="article_text event_container">
+                <div class="project-data"><p class="project-text"> Конец приема заявок: <p class="project-info">{{ event_article.entry_deadline }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Начало: <p class="project-info">{{ event_article.start_date }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Конец: <p class="project-info">{{ event_article.ending_date }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Организатор: <p class="project-info">{{ event_article.event_organiser }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Описание: <p class="project-info" style="margin: 0;"> {{event_article.event_text}} </p></p></div>
+            </div>
+            <div class="article_image">
+            <img src="{{ event_article.event_image }}" style="max-height: 256px; max-width: 400px; padding-left: 50px;">
+            </div>
+        </div>
+        {% for tag in event_article.event_tags.all %}
+            <p class="tag" style="display:inline;"><a href="{% url 'EventCalendar:events_tag_filtered' tag.tag_name %}">{{ tag.tag_name }}</a></p>
+        {% endfor %}
+        </article>
+    {% endfor %}
+{% else %}
+    <p>No news are available.</p>
+{% endif %}
+{% endblock %}

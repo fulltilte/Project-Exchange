@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Мероприятия</title>
+{% endblock %}
+{% block content %}
+<article>
+    <p><a class="project-name" href="{% url 'EventCalendar:detail' eventpage.id %}">{{ eventpage.event_title }}</a></p>
+        <div class="articleMainBody" style="display: flex; justify-content: space-between;">
+            <!-- <div class="article_text">
+                <p> Конец приема заявок: {{ eventpage.entry_deadline }} </p>
+                <p> Начало: {{ eventpage.start_date }} </p>
+                <p> Конец: {{ eventpage.ending_date }} </p>
+            <p> Организатор: {{ eventpage.event_organiser  }}</p>
+            <p> {{eventpage.event_text}} </p>
+            
+            </div> -->
+
+            <div class="article_text event_container">
+                <div class="project-data"><p class="project-text"> Конец приема заявок: <p class="project-info">{{ eventpage.entry_deadline }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Начало: <p class="project-info">{{ eventpage.start_date }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Конец: <p class="project-info">{{ eventpage.ending_date }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Организатор: <p class="project-info">{{ eventpage.event_organiser }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Описание: <p class="project-info" style="margin: 0;"> {{eventpage.event_text}}</p></p></div>
+                <div class="project-data"><p class="project-text"> Призовой фонд: <p class="project-info">{{ eventpage.event_prize }}</p></p></div>
+                <div class="project-data"><p class="project-text"> Опубликовано: <p class="project-info">{{ eventpage.pub_date }}</p></p></div>
+            </div>
+            <div class="article_image">
+            <img src="{{ eventpage.event_image }}" style="max-height: 256px; max-width: 400px; margin-left: 50px; margin-top: 40px;">
+            </div>
+        </div>
+        {% for tag in eventpage.event_tags.all %}
+            <p class="tag" style="display:inline;"><a href="{% url 'EventCalendar:events_tag_filtered' tag.tag_name %}">{{ tag.tag_name }}</a></p>
+        {% endfor %}
+    
+    <div style="margin-top: 30px;" class="commentBlock">
+        Комментарии:
+        {% for comment in eventpage.eventcomment_set.all %}
+            <div class="box">
+						<div class="Name">{{comment.user_id.username}} {{comment.pub_time}}
+                        <p>{{comment.comment_text}}</p>
+                        </div>
+			</div>
+        {% endfor %}
+        {% if user.is_authenticated %}
+        <!-- <div id="messagewindow">
+				<form name = "f2" action="{% url 'EventCalendar:send_comment' eventpage.pk  %}" method="post">
+				{% csrf_token %}
+                    <div id="sendcontainer"><textarea  name="comment_text" cols="40" rows="5" placeholder="Write your comment here..." id="chatbox"> </textarea>
+					<div id="buttoncontainer">
+						<input type="submit" name="button" value="Отправить" class="default-btn">
+					</div>
+                    <textarea style="display: none;" name="user_id">1</textarea>
+				</div>
+				</form>
+        </div> -->
+
+        <div id="messagewindow">
+            <form name = "f2" class="f2" action="{% url 'EventCalendar:send_comment' eventpage.pk  %}" method="post">
+            {% csrf_token %}
+                <div id="sendcontainer">
+                    <textarea  name="comment_text" class="comment-area" cols="40" rows="5" placeholder="Write your comment here..." id="chatbox"> </textarea>
+                </div>
+            <div id="buttoncontainer">
+                <input type="submit"  name="button" value="Отправить" class="default-btn">
+            </div>
+            </form>
+        </div>
+        {% else %}
+        <p align="center" class="login_to_comment_warning">Войдите, чтобы оставить комментарий</p>
+        {% endif %}
+    </div>
+    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+</article>
+{% endblock %}
+
+

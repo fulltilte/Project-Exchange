@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Новости</title>
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if is_author %}
+            {% if project %}
+                <h1> Участники проекта {{ project.project_name }}:</h1>
+                <a class="link_to" href="{% url 'core:project_detail' project.id %}">Вернуться к странице проекта  </a>
+                {% for participant in project.project_participants.all %}
+                    <article>
+                        <h2 class="entry_user_header"> <a class="user_link" href="NOTIMPLEMENTED"> {{ participant.get_name }}</a>  </h2>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p>Заявок или участников пока что нет.</p>
+            {% endif %}
+        {% else %}
+            <div class="error_warning"> Только автор проекта имеет право просматривать эту страницу </div>
+        {% endif %}
+        {% else %}
+            <div class="error_warning"> Войдите, чтобы просматривать эту страницу </div>
+    {% endif %}
+
+{% endblock %}
+
+

@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Заявки команды</title>
+{% endblock %}
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if is_author %}
+            {% if team_entries %}
+                <h1> Заявки в команду {{ team.team_name }}:</h1>
+                <a class="link_to" href="{% url 'core:team_detailed' team.id %}">Вернуться к странице команды  </a>
+                {% for entry in team_entries %}
+                {% if request.GET.project_link %}
+                    <div><a href="{{ request.GET.project_link }}"> Вернуться к проекту </a></div>
+                {% endif %}
+                    <article>
+                        <h2 class="entry_user_header"> <a class="user_link" href="NOTIMPLEMENTED"> {{ entry.user.get_name }}</a>  </h2>
+                        <div class="entry_status">{{ entry.get_status_display }}</div> >
+                        {% if entry.status == 'pen' %}
+                            <a class="common_button" href="{% url 'core:team_accept_or_deny_applicant' team.id entry.id 'accepted' %}"> Принять </a>
+                            <a class="common_button" href="{% url 'core:team_accept_or_deny_applicant' team.id entry.id 'denied' %}"> Отклонить </a>
+                        {% elif entry.status == 'acc' %}
+                            <a class="common_button" href="{% url 'core:team_accept_or_deny_applicant' team.id entry.id 'kicked' %}"> Исключить </a>
+                        {% elif entry.status == 'den' %}
+                            <a class="common_button" href="{% url 'core:team_accept_or_deny_applicant' team.id entry.id 'accepted' %}"> Принять обратно </a>
+                        {% endif %}
+                        <div class="application_date"> Заявка была прислана: {{ entry.pub_date }} </div>
+                        <div class="application_date"> Статус был изменен последний раз в: {{ entry.status_changed_date }} </div>
+                    </article>
+                {% endfor %}
+            {% else %}
+                <p>Заявок или участников пока что нет.</p>
+            {% endif %}
+        {% else %}
+            <div class="error_warning"> Только капитан команды имеет право просматривать эту страницу </div>
+        {% endif %}
+        {% else %}
+            <div class="error_warning"> Войдите, чтобы просматривать эту страницу </div>
+    {% endif %}
+
+{% endblock %}
+
+

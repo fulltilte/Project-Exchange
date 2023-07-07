@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}
+    <title>Новости</title>
+{% endblock %}
+{% block content %}
+    <a class="create_project_button" style="color: white" href="{% url 'core:project_create' %}"> Click here to create an event </a> {# TODO: make check permissions here #}
+    {% if object_list %}
+        {% for project in object_list %}
+            <article>
+                <p><a class="project-name" href="{% url 'core:project_detail' project.id %}">{{ project.project_name }}</a></p>
+
+                <div class="project-data"><p class="project-text">Тип мероприятия: <p class="project-info">{{project.event_type }}</p></p></div>
+                <div class="project-data"><p class="project-text">Информация о проекте:<p class="project-info">{{ project.project_info }}</p></p></div>
+                <div class="project-data"><p class="project-text">Направление: <p class="project-info">{{ project.direction_type }}</p></p></div>
+                <div class="project-data"><p class="project-text">Навыки для участия: </p>
+    
+                <div class="project-data">
+                    <div class="tag_container"> {% for skill in project.project_skills.all %}
+                        <div class="tag"><p class="project-info">{{skill.skill_name }}</p></div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                            
+                <div class="project-data"><p class="project-text">Авторы: </p>{% for author in project.project_authors.all %}
+                    <p class="project-text"><p class="project-info">{{ author.username }}</p></p> {% endfor %}
+                </div>
+    
+                <div class="project-deadline">
+                    <div class="project-data"><p class="project-text">Начало: <p class="project-info">{{ project.project_start }}</p></p></div>
+                    <div class="project-data"><p class="project-text">Конец: <p class="project-info">{{ project.project_end }}</p></p></div>
+                </div>
+                            
+                <div class="project-data"><p class="project-text">Статус проекта: <p class="project-info">{{ project.get_project_status_display }}</p></p></div>
+                <div class="project-data"><p class="project-text">Опубликовано: <p class="project-info">{{ project.pub_date }}</p></p></div>
+
+                <div class="flex-space-between" style="padding-top: 10px;"><div class="default-btn">
+                    <a style="color: black;" href="{% url 'core:accept_project_mod' project.id %}"> Принять проект </a></div>
+                <div class="default-btn"><a style="color: black;" href="{% url 'core:deny_project_mod' project.id %}"> Отклонить проект </a></div></div>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            </article>
+        {% endfor %}
+    {% else %}
+        <p align="center">На данный момент нет проектов, ожидающих рассмотрения</p>
+    {% endif %}
+
+{% endblock %}
+
+

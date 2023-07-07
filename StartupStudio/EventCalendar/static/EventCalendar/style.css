@@ -1,0 +1,141 @@
+body{
+	background: radial-gradient(circle at top left, #7F0800, #010A45);
+	/*radial-gradient(circle at top left, #FF0B00, #000066)*/
+	color:#14F7FF;
+	font-family:Verdana;
+	align:center;
+
+}
+
+a{
+    color:black;
+}
+
+article{
+	background-color: white;
+	color:black;
+	padding:15px;
+	border: 2px solid #3B2D35;
+	z-index: 99999;
+	position: relative;
+	min-width: 600px;
+    max-width: 50%;
+    margin: 20px auto;
+	-webkit-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+-moz-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+/*border: 2px solid black;*/
+nav{
+	height: 40px;
+	width: 90%;
+	margin-left: 5%;
+	margin-right: 4%;
+	display:flex;
+	overflow: hidden;
+	justify-content: space-evenly;
+	padding: 0px;
+	background: linear-gradient(#fffee7, #edeae1);
+	padding-top: 20px;
+	padding-bottom: 0px;
+	min-width: 900px;
+
+	z-index: 10000;
+	position: relative;
+}
+
+nav a{
+		color: black;
+	text-decoration: none;
+}
+
+a{
+	text-decoration: none;
+}
+
+article{
+	padding: 30px;
+	padding-top: 20px;
+
+}
+
+article p{
+	padding-bottom: 20px;
+}
+
+article .tag{
+	background:black;
+	padding: 10px;
+
+}
+
+article .tag a{
+	color:whitesmoke;
+}
+
+.articleMainBody{
+	padding-bottom: 30px;
+}
+
+.commentsCounter{
+	padding: 20px;
+	background: #14F7FF;
+	-webkit-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+	-moz-box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+	box-shadow: 4px 4px 8px 0px rgba(34, 60, 80, 0.2);
+	margin-bottom: 30px;
+	margin-top: 10px;
+}
+
+
+#sendbutton{
+	background-color: #4CAF50;
+  color: black;
+  padding: 20%;
+  height:100%;
+  width:100%;
+  margin: auto;
+  border: none;
+  cursor: pointer;
+  float:right;
+}
+
+#buttoncontainer{
+width:16%;
+height:100%;
+float:right;
+}
+
+textarea {
+	resize: none;
+	width: 80%;
+	border: none;
+}
+
+#chatcontainer{
+	background:white;
+	height: 80%;
+	margin-bottom:40px;
+	border: 3px solid white;
+	overflow: scroll;
+	border-radius:3px;
+	-webkit-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+-moz-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+#messagewindow{
+	border: 2px solid black;
+	margin-top: 20px;
+	background:white;
+	height: 10%;
+	border-radius:5px;
+	-webkit-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+	-moz-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+	box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.article_text p{
+	margin: 0;
+}

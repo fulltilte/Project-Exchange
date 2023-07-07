@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}
+<title>Новости</title>
+{% endblock %}
+{% block content %}
+    {% if tag %}
+        <p align="center"><a href="{% url 'NewsFeed:news' %}">Сбросить фильтры</a></p>
+    {% endif %}
+{% if latest_article_list %}
+    {% for news_article in latest_article_list %}
+        <article><h2><a href="{% url 'NewsFeed:detail' news_article.id %}">{{ news_article.news_title }}</a></h2>
+        <div class="flex-body" style="display: flex; justify-content: space-between">
+            <div class="articleMainBody">{{news_article.formatted_markdown|safe}}  </div>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/2048px-Telegram_logo.svg.png" style="height: 256px; width: 256px; padding-left: 50px;">
+        </div>
+        <div class="commentsCounter">
+            Комментарии: {{ news_article.comment_set.count }}
+        </div>
+        {% for tag in news_article.tags.all %}
+            <p class="tag" style="display:inline;"><a href="{% url 'NewsFeed:news_tag_filtered' tag.tag_name %}">#{{ tag.tag_name }}</a></p>
+        {% endfor %}
+        </article>
+    {% endfor %}
+    <div class="page_navigator">
+        <div class="page_wrap">
+            {% for page_num in page_numbers %}
+            <div class="page_ref" > <a href="{% url 'NewsFeed:news_on_page' page_num %}" {% if current_page == page_num %} id="current_page_num" {% endif %}>{{ page_num }}</a></div>
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <div class="empty_page_warning">
+        <p style="font-family: Calibri; font-size: 4vw;">WELCOME TO THE VOID</p>
+        <p style="text-align: center; font-size: 20px">Seems like nothing is here yet.</p>
+        <p style="text-align: center;"><a style="margin: 0 auto; color:white; font-size: 20px;" href="{% url 'NewsFeed:news_on_page' 1 %}">Return to the main page?</a></p>
+    </div>
+{% endif %}
+
+{% endblock %}

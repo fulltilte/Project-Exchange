@@ -29,8 +29,8 @@
 	    </nav>
     {% endblock %}
     {% block user %}
-        <div class="user"><div class="user-container"><p class="user-name"> {% if user.is_authenticated %} <a href="{% url 'core:my_profile' %}">{{ request.user }}</a></p> <a class="default-btn" style="color: black;" href="{% url 'logout' %}?next={{request.path}}">Выйти</a></div></div>
-        {% else %}<p class="user-name">Вы не вошли в аккаунт:  <a href="{% url 'login' %}?next={{request.path}}">Войти</a></p> {% endif %}
+        <div class="user"><div class="user-container"><p class="user-name"> {% if user.is_authenticated %} <a href="{% url 'core:my_profile' %}">{{ request.user }}</a></p> <a class="default-btn" style="color: black;" href="{% url 'logout' %}?next={{request.path}}">Выйти</a>
+        {% else %}<p class="user-name">Вы не вошли в аккаунт:  <a href="{% url 'login' %}?next={{request.path}}">Войти</a></p> {% endif %}</div></div>
     {% endblock %}
     {% block content %}
 

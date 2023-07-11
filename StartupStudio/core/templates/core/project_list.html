@@ -21,6 +21,7 @@
         {% for project in object_list %}
             <article class="project_article thin-container">
                 <p><a class="project-name" href="{% url 'core:project_detail' project.id %}">{{ project.project_name }}</a></p>
+                <div class="project-data"><p class="project-text">Статус проекта: <p class="project-info">{{ project.get_project_status_display }}</p></p></div>
                 <div class="article_body">
                     <div class="left-container">
                         <div class="project-data"><p class="project-text">Тип мероприятия: <p class="project-info">{{project.event_type }}</p></p></div>
@@ -45,11 +46,10 @@
                                 <div class="project-data"><p class="project-text">Конец: <p class="project-info">{{ project.project_end }}</p></p></div>
                             </div>
                             
-                            <div class="project-data"><p class="project-text">Статус проекта: <p class="project-info">{{ project.get_project_status_display }}</p></p></div>
                             <div class="project-data"><p class="project-text">Опубликовано: <p class="project-info">{{ project.pub_date }}</p></p></div>
                             {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                            <div class="right-container">
-                                <img src="https://i.pinimg.com/736x/2b/81/a8/2b81a830e7be62b2437a493d2867c3d8.jpg" style="height: 256px; width: 256px; padding-left: 50px;">
+                            <div class="right-container flex-center">
+                                <img src="https://i.pinimg.com/736x/2b/81/a8/2b81a830e7be62b2437a493d2867c3d8.jpg" style="height: 256px; width: 256px;">
                             </div>
                         </div>
                     </div>

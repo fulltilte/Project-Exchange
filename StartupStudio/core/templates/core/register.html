@@ -4,14 +4,37 @@
 {% load crispy_forms_tags %}
 
 <!--Register-->
-<div class="container py-5">
-	<h1>Register</h1>
-	<form method="POST">
-		{% csrf_token %}
-		{{ register_form|crispy }}
-		<button class="btn btn-primary" type="submit">Register</button>
+
+
+<div align="center">
+	<form method="post" class="login-form">
+	  {% csrf_token %}
+		<div class="login-form-container">
+		  	<div class="login-form-block">
+				<p class="form-text">Имя пользователя</p>
+				<input type="text" name="username" maxlength="150" autofocus="" class="textinput form-control form-input" required="" id="id_username">		  
+			</div>
+	
+		  	<div class="login-form-block">
+				<p class="form-text">Почта</p>
+				<input type="email" name="email" class="emailinput form-control form-input" required="" id="id_email">
+			</div>
+
+			<div class="login-form-block">
+				<p class="form-text">Пароль</p>
+				<input type="password" name="password1" autocomplete="new-password" class="passwordinput form-control form-input" required="" id="id_password1">
+			</div>
+
+			<div class="login-form-block">
+				<p class="form-text">Подтверждение пароля</p>
+				<input type="password" name="password2" autocomplete="new-password" class="passwordinput form-control form-input" required="" id="id_password2">
+			</div>
+	
+			<div class="login-form-btn">
+				<input class="btn btn-primary form-btn" type="submit" value="Регистрация"/>
+			</div>
+		</div>
 	</form>
-	<p class="text-center">If you already have an account, <a href="/login">login</a> instead.</p>
 </div>
 
 {% endblock %}

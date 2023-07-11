@@ -1,11 +1,8 @@
 body{
 	background: white;
-	/*radial-gradient(circle at top left, #7F0800, #010A45);
-	radial-gradient(circle at top left, #FF0B00, #000066)*/
 	color:black;
 	font-family: Verdana;
 	align: center;
-
 }
 
 article{
@@ -17,13 +14,31 @@ article{
 	position: relative;
 	min-width: 600px;
 	max-width: 900px;
-	/* height: auto; */
-	/* height: 1000px; */
-
     margin: 20px auto;
 	-webkit-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
--moz-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+	-moz-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+	box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.profile-container {
+	width: 900px;
+}
+
+.main-left {
+	width: 50%;
+	margin-right: 10px;
+}
+
+.main-right {
+	width: 50%;
+}
+
+.main-left-block {
+	display: flex;
+}
+
+.main-left-img {
+	margin-right: 20px;
 }
 
 .my-project-title {
@@ -39,6 +54,60 @@ box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
 	-webkit-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
 -moz-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
 box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.login-form {
+	margin-top: 10%;
+}
+
+.login-form-container {
+	background-color: #D8E9FD;
+	border-radius: 40px;
+	width: 600px;
+	padding: 20px 0;
+	-webkit-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+-moz-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.login-form-block {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 10px;
+}
+
+.form-text {
+	width: 30%;
+	display: flex;
+	justify-content: left;
+	text-align: left;
+}
+
+.form-input {
+	width: 40%;
+	border: 0;
+	border-radius: 40px;
+	text-align:center;
+	height: 45px;
+}
+
+.form-btn {
+	background-color: #E1FAD5;
+	border: 0;
+	border-radius: 10px;
+	color: #000;
+	min-width: 73px;
+	height: 43px;
+	font-size: 17px;
+	-webkit-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+-moz-box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
+}
+
+.login-form-btn {
+	margin: 20px 0;
+	
 }
 
 .project-name {
@@ -90,12 +159,17 @@ box-shadow: 11px 10px 8px 0px rgba(34, 60, 80, 0.2);
 .user {
 	display: flex;
 	justify-content: right;
+	height: 60px;
 }
 
 .user-container {
 	display: flex;
-	flex-direction: column;
+	/* flex-direction: column; */
 	align-items: center;
+}
+
+.user-new {
+	margin: 20px 20px 0 0;
 }
 
 .user-name {
@@ -219,7 +293,7 @@ article{
 article .tag{
 	background:black;
 	padding: 10px;
-	margin-top: 60px;
+	margin-right: 10px;
 }
 
 article .tag a{
@@ -569,9 +643,9 @@ main>h2{
 
 .profile_projects_container .previous_projects{
 	margin-top: 15px;
-	display: flex;
+	/* display: flex; */
 	width: 100%;
-	justify-content: space-between
+	/* justify-content: space-between */
 
 }
 
@@ -588,18 +662,22 @@ main>h2{
 	max-width: 500px;
 }
 
-.tag_container .tag{
+/* .tag_container .tag{
 	margin-left: 10px;
-}
+} */
 
-.right-container{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
+/* .right-container{
+	height: 50px;
+} */
 
 .flex-row{
 	display:flex;
+}
+
+.flex-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .flex-space-between{

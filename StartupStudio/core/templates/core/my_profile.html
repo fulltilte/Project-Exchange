@@ -2,10 +2,64 @@
 {% block title %}
     <title>Мой профиль</title>
 {% endblock %}
+
 {% block content %}
-    <article class="thin-container">
+<div class="title-container"><h2 class="my-project-title">Личный кабинет</h2></div>
+    <article class="profile-container">
         <div class="main-container centered-container">
-            <div class="main-info-container profile-container ">
+            <div class="main-left">
+                <div class="main-left-block">
+                    <div class="main-left-img">
+                        <img src="https://i.pinimg.com/736x/2b/81/a8/2b81a830e7be62b2437a493d2867c3d8.jpg" style="height: 143px; width: 143px; margin-top: 7px;">
+                    </div>
+    
+                    <div class="main-left-info">
+                        <h2>Станислав Кокунин</h2>
+                        <h3>TheWill</h3>
+                        <p class="project-text">Почта: <p class="project-info" style="margin:0;">thewillfeed@gmail.com</p></p>
+                    </div>
+                </div>
+                
+                <p class="project-text">Описание профиля: <p class="project-info" style="margin: 10px 0 0 0;">Web-разработчик, обучающийся в государственном университете "Дубна"</p></p>
+            </div>
+            
+            <div class="main-right">
+                <div class="profile_projects_container" ><p class="project-text">Прошедшие проекты:</p>
+                    <div class="shadebox previous_projects">
+                        <div class="left-container">
+                            <p class="project-info">Хакатон по машинному обучению</p>
+                            <p class="project-info">Команда: Last Dark Dust</p>
+                            <p class="project-info">Результат: 3 место</p>
+                        </div>
+                        <div class="right-container">
+                            <div class="tag_container" ><div class="tag">Python</div>
+                            <div class="tag">Web-разработка</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="shadebox previous_projects " >
+                        <div class="left-container">
+                            <p class="project-info">Hack The Cart</p>
+                            <p class="project-info"> Команда: Last Dark Dust </p>
+                            <p class="project-info">Результат: 3 место</p>
+                        </div>
+                        <div class="right-container">
+                            <div class="tag_container"><div class="tag">Python</div>
+                            <div class="tag">Data Science</div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <!-- <div class="main-info-container profile-container ">
                 <h2>Станислав Кокунин</h2>
                 <h3>TheWill </h3>
                 <div>Почта: thewillfeed@gmail.com</div>
@@ -37,7 +91,7 @@
                     </div>
                 </div>
                     </div>
-            </div>
+            </div> -->
         </div>
     </article>
 {% endblock %}
